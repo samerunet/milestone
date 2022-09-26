@@ -13,13 +13,24 @@ const ProtectedRoute = ({ permission, children }) => {
 
 export default function AppGateway() {
 	const [permission, setPermission] = useState(false);
+	const [users, setUsers] = useState([]);
+	const [user, setUser] = useState([]);
+	const API = "https://safe-beach-04456.herokuapp.com/todos";
 
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route
 					path='/login'
-					element={<Login setPermission={setPermission} />}
+					element={
+						<Login
+							setPermission={setPermission}
+							API={API}
+							setUsers={setUsers}
+							user={user}
+							setUser={setUser}
+						/>
+					}
 				/>
 				<Route
 					path='/signup'

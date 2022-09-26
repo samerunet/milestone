@@ -3,6 +3,11 @@
 	display: flex;
 	flex-wrap: wrap;
 }
+.background {
+	background: url("https://raw.githubusercontent.com/samerunet/milestone/main/react_uno/public/assets/Landing-Page.gif")
+		no-repeat;
+	background-size: 100%;
+}
 
 img {
 	height: 200px;
