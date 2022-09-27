@@ -1,26 +1,10 @@
-.App {
+.game {
 	text-align: center;
 	display: flex;
 	flex-wrap: wrap;
 }
 .background {
-	background: url("https://raw.githubusercontent.com/samerunet/milestone/main/react_uno/public/assets/Landing-Page.gif")
+	background: url("https://cdn2.unrealengine.com/Diesel%2Fproductv2%2Funo%2Fhome%2FGameName_Store_Landscape_2560x1440-2560x1440-5195e8a3e06d672f97a1ee49ecea59027c14cae4.jpg")
 		no-repeat;
 	background-size: 100%;
-}
-
-img {
-	height: 200px;
-	width: 150px;
-	box-shadow: 10px 5px 5px rgb(141, 135, 135);
-	margin: 10px;
-}
-
-@keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
 }

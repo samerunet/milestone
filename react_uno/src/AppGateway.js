@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/login/Login.js";
 import Signup from "./components/signup/SignUp.js";
+import Lobby from "./components/Lobby/Lobby.js";
+import Game from "./components/Game/Game.js";
 import { useState } from "react";
 
 const ProtectedRoute = ({ permission, children }) => {
@@ -16,6 +18,7 @@ export default function AppGateway() {
 	const [users, setUsers] = useState([]);
 	const [user, setUser] = useState([]);
 	const API = "https://safe-beach-04456.herokuapp.com/todos";
+	const [players, setPlayers] = useState("");
 
 	return (
 		<BrowserRouter>
@@ -29,6 +32,7 @@ export default function AppGateway() {
 							setUsers={setUsers}
 							user={user}
 							setUser={setUser}
+							users={users}
 						/>
 					}
 				/>
@@ -39,7 +43,19 @@ export default function AppGateway() {
 
 				<Route
 					path='/'
-					element={<ProtectedRoute permission={permission}></ProtectedRoute>}
+					element={
+						<ProtectedRoute permission={permission}>
+							<Lobby user={user} players={players} setPlayers={setPlayers} />
+						</ProtectedRoute>
+					}
+				/>
+				<Route
+					path='/game'
+					element={
+						<ProtectedRoute permission={permission}>
+							<Game user={user} players={players} />
+						</ProtectedRoute>
+					}
 				/>
 
 				<Route

@@ -1,4 +1,4 @@
-import CardDeck from "./CardDeck.js";
+
 import "./App.css";
 import AppGateway from "./AppGateway";
 
