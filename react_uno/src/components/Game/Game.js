@@ -16,7 +16,14 @@ export default function Game({ user, players }) {
 	const [player2Turn, setPlayer2Turn] = useState(false);
 
 	// this is for random field and deck rotation
-	let rotateDeg = [20, 60, 90, 45, 30, 25, 33, 100, 2, 4, 40];
+	let rotateDeg = [20, 45, 30, 25, 2, 4, 40];
+	let rem = [-1, -2, -3, -4, -5, -6, -7];
+
+	const remRandom = () => {
+		rem.sort(function () {
+			return 0.5 - Math.random();
+		});
+	};
 	const deg = () => {
 		rotateDeg = rotateDeg.sort(function () {
 			return 0.5 - Math.random();
@@ -92,30 +99,30 @@ export default function Game({ user, players }) {
 
 	return (
 		<>
-			<div class='flex h-screen bg-gradient-to-r from-red-900 via-red-500 to-red-900'>
-				<div class='flex-1 flex flex-col overflow-hidden'>
-					<header class='flex justify-between items-center bg-black text-white p-4'>
-						<div class='flex'>Username: {user.username}</div>
-						<div class='flex'>Score {user.score}</div>
+			<div className='flex h-screen bg-gradient-to-r from-red-900 via-red-500 to-red-900'>
+				<div className='flex-1 flex flex-col overflow-hidden'>
+					<header className='flex justify-between items-center bg-black text-white p-4'>
+						<div className='flex'>Username: {user.username}</div>
+						<div className='flex'>Score {user.score}</div>
 					</header>
-					<div class='flex h-full'>
-						<nav class='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
-							<div class='w-full flex mx-auto px-6 py-8 border-dashed'>
+					<div className='flex h-full'>
+						<nav className='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
+							<div className='w-full flex mx-auto px-6 py-8 border-dashed'>
 								user number 3
 							</div>
 						</nav>
-						<main class='flex flex-col w-full h-full  overflow-x-hidden overflow-y-auto mb-14'>
-							<div class='flex w-full h-full mx-auto px-6 py-8'>
-								<div class='flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed'>
-									<div class='flex mt-10  w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
+						<main className='flex flex-col w-full h-full  overflow-x-hidden overflow-y-auto mb-14'>
+							<div className='flex w-full h-full mx-auto px-6 py-8'>
+								<div className='flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed'>
+									<div className='flex mt-10  w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
 										<Player2
 											player2={player2}
 											nextMove={nextMove}
 											player2Turn={player2Turn}
 										/>
 									</div>
-									<div class='flex w-5/6 max-w-5/6 h-1/2 scale-50 items-center justify-center mx-auto  '>
-										<div class='relative  scale-50 flex w-full max-w-xl h-1/2 items-center justify-center mx-auto '>
+									<div className='flex w-5/6 max-w-5/6 h-1/2 scale-50 items-center justify-center mx-auto  '>
+										<div className='relative  scale-50 flex w-full max-w-xl h-1/2 items-center justify-center mx-auto '>
 											<Deck
 												deg={deg}
 												rotateDeg={rotateDeg}
@@ -129,14 +136,22 @@ export default function Game({ user, players }) {
 												setCards={setCards}
 											/>
 										</div>
-										<div class='flex  scale-50 scale-x-25 w-full max-w-xl h-1/4 items-center justify-center mx-auto relative z-0'>
+										<div className='flex  scale-50 scale-x-25 w-full max-w-xl h-1/4 items-center justify-center mx-auto relative z-0'>
 											{/* the field deck  */}
-											<Field deg={deg} rotateDeg={rotateDeg} field={field} />
+											<Field
+												deg={deg}
+												rotateDeg={rotateDeg}
+												field={field}
+												rem={rem}
+												remRandom={remRandom}
+											/>
 										</div>
 									</div>
 
-									<div class='flex mt-10 w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
+									<div className='flex mt-10 w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
 										<Player1
+											deg={deg}
+											rotateDeg={rotateDeg}
 											player1={player1}
 											nextMove={nextMove}
 											player1Turn={player1Turn}
@@ -145,8 +160,8 @@ export default function Game({ user, players }) {
 								</div>
 							</div>
 						</main>
-						<nav class='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
-							<div class='w-full flex mx-auto px-6 py-8'>user number 4</div>
+						<nav className='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
+							<div className='w-full flex mx-auto px-6 py-8'>user number 4</div>
 						</nav>
 					</div>
 				</div>

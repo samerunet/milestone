@@ -13,6 +13,11 @@ export default function Deck({
 	setPlayer2,
 	setCards,
 }) {
+	const transition = {
+		duration: 0.5,
+		type: "spring",
+	};
+
 	const takeCard = () => {
 		let deck = [...cards];
 		let takeOneDeck = deck.at(-1);
@@ -45,10 +50,12 @@ export default function Deck({
 				deg();
 				return (
 					<motion.img
-						initial={{ rotate: rotateDeg[0] }}
+						initial={{ rotate: rotateDeg[0], left: "2rem", top: "12rem" }}
+						whileInView={{ left: "4rem" }}
+						transition={transition}
 						className={` ring-offset-black skew-x-12 skew-y-12 absolute scale-75 inset-0  z-10 `}
 						key={card.id}
-						src={card.src}
+						src={"assets/card-back.png"}
 						alt={card.value}
 					/>
 				);
@@ -57,4 +64,4 @@ export default function Deck({
 	);
 }
 
-//"assets/card-back.png"
+//

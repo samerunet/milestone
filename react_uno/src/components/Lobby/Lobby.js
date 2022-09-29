@@ -19,9 +19,9 @@ export default function Lobby({ players, setPlayers }) {
 					<div className='max-w-xl mx-auto text-center'>
 						<img className='object  ' src='assets/logo.png' />
 						<p className='mt-4 text-white'>Choose how many players</p>
-						<div class='flex items-center justify-center'>
+						<div className='flex items-center justify-center'>
 							<div
-								class='inline-flex shadow-md hover:shadow-lg focus:shadow-lg'
+								className='inline-flex shadow-md hover:shadow-lg focus:shadow-lg'
 								role='group'
 							>
 								<button
@@ -29,7 +29,7 @@ export default function Lobby({ players, setPlayers }) {
 										handlePlayers("pc");
 									}}
 									type='button'
-									class='rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-600 transition duration-150 ease-in-out'
+									className='rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-600 transition duration-150 ease-in-out'
 								>
 									WITH PC
 								</button>
@@ -38,7 +38,7 @@ export default function Lobby({ players, setPlayers }) {
 										handlePlayers(2);
 									}}
 									type='button'
-									class=' rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out'
+									className=' rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out'
 								>
 									2 PLAYER
 								</button>
@@ -47,7 +47,7 @@ export default function Lobby({ players, setPlayers }) {
 										handlePlayers(4);
 									}}
 									type='button'
-									class='rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out'
+									className='rounded-l inline-block px-16 py-2.5 bg-red-500 text-white font-l text-l leading-tight uppercase hover:bg-white-700 hover:text-red focus:bg-red-700 focus:outline-none focus:ring-0 active:bg-red-800 transition duration-150 ease-in-out'
 								>
 									4 PLAYER
 								</button>
