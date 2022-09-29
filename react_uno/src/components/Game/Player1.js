@@ -16,7 +16,6 @@ export default function Player1({
 
 				return (
 					<motion.img
-						initial={{ left: "-1rem", scale: "0.5" }}
 						onClick={() => {
 							player1Turn
 								? nextMove(playerCard, indexCurrent)

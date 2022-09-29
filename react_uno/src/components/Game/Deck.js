@@ -1,6 +1,6 @@
 import React from "react";
 import { motion, transform } from "framer-motion";
-
+import "./Player1.css";
 export default function Deck({
 	cards,
 	deg,
@@ -53,7 +53,7 @@ export default function Deck({
 						initial={{ rotate: rotateDeg[0], left: "2rem", top: "12rem" }}
 						whileInView={{ left: "4rem" }}
 						transition={transition}
-						className={` ring-offset-black skew-x-12 skew-y-12 absolute scale-75 inset-0  z-10 `}
+						className={` ring-offset-black skew-x-12 skew-y-12 absolute scale-75 inset-0  z-10 customDeck`}
 						key={card.id}
 						src={"assets/card-back.png"}
 						alt={card.value}

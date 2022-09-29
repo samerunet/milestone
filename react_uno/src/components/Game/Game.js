@@ -34,43 +34,54 @@ export default function Game({ user, players }) {
 	const [player2, setPlayer2] = useState([]);
 	const [field, setField] = useState([]);
 	// next move
+	let move = [...field];
+	let moveItem = field.at(-1);
 
+	const skipPlayer = () => {
+		console.log(player1Turn, player2Turn);
+		player1Turn ? setPlayer1Turn(false) : setPlayer1Turn(true);
+		player2Turn ? setPlayer2Turn(false) : setPlayer2Turn(true);
+		console.log(player1Turn, player2Turn);
+		moveItem.value = "nothing";
+		console.log(moveItem.value);
+		nextMove();
+	};
 	const nextMove = (playerCard, index) => {
-		let move = [...field];
-		// making object of the last move to compare to
-		let moveItem = field.at(-1);
-		// copy of the field
-		if (player1Turn === true) {
-			let player1copy = [...player1];
-			if (
-				moveItem.value === playerCard.value ||
-				moveItem.color === playerCard.color
-			) {
-				move.push(playerCard);
-				player1copy.splice(index, 1);
+		if (moveItem.value === "skip") {
+			skipPlayer();
+		} else {
+			if (player1Turn === true) {
+				let player1copy = [...player1];
+				if (
+					moveItem.value === playerCard.value ||
+					moveItem.color === playerCard.color
+				) {
+					move.push(playerCard);
+					player1copy.splice(index, 1);
 
-				setPlayer1(player1copy);
-				setField(move);
-				setPlayer2Turn(true);
-				setPlayer1Turn(false);
-			} else {
-				alert("Invalid card");
-			}
-		} else if (player2Turn === true) {
-			let player2copy = [...player2];
-			if (
-				moveItem.value === playerCard.value ||
-				moveItem.color === playerCard.color
-			) {
-				move.push(playerCard);
-				player2copy.splice(index, 1);
+					setPlayer1(player1copy);
+					setField(move);
+					setPlayer2Turn(true);
+					setPlayer1Turn(false);
+				} else {
+					alert("Invalid card");
+				}
+			} else if (player2Turn === true) {
+				let player2copy = [...player2];
+				if (
+					moveItem.value === playerCard.value ||
+					moveItem.color === playerCard.color
+				) {
+					move.push(playerCard);
+					player2copy.splice(index, 1);
 
-				setPlayer2(player2copy);
-				setField(move);
-				setPlayer1Turn(true);
-				setPlayer2Turn(false);
-			} else {
-				alert("Invalid card");
+					setPlayer2(player2copy);
+					setField(move);
+					setPlayer1Turn(true);
+					setPlayer2Turn(false);
+				} else {
+					alert("Invalid card");
+				}
 			}
 		}
 	};
