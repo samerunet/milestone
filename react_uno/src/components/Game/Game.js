@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
 import CardDeck from "../../CardDeck.js";
 import "./Game.css";
-import { motion, transform } from "framer-motion";
-
+import { motion } from "framer-motion";
+import Field from "./Field.js";
+import Player2 from "./Player2.js";
+import Player1 from "./Player1.js";
+import Deck from "./Deck.js";
 export default function Game({ user, players }) {
 	const flag = React.useRef(true);
-	const cards = CardDeck.sort(function () {
-		return 0.5 - Math.random();
-	});
+	const carddeck = CardDeck.sort((a, b) => 0.5 - Math.random());
+	const [cards, setCards] = useState(carddeck);
 
-	let rotateDeg = [3, 6, 12, 45];
+	const [player1Turn, setPlayer1Turn] = useState(true);
+
+	const [player2Turn, setPlayer2Turn] = useState(false);
+
+	// this is for random field and deck rotation
+	let rotateDeg = [20, 60, 90, 45, 30, 25, 33, 100, 2, 4, 40];
 	const deg = () => {
 		rotateDeg = rotateDeg.sort(function () {
 			return 0.5 - Math.random();
@@ -19,10 +26,50 @@ export default function Game({ user, players }) {
 	const [player1, setPlayer1] = useState([]);
 	const [player2, setPlayer2] = useState([]);
 	const [field, setField] = useState([]);
+	// next move
+
+	const nextMove = (playerCard, index) => {
+		let move = [...field];
+		// making object of the last move to compare to
+		let moveItem = field.at(-1);
+		// copy of the field
+		if (player1Turn === true) {
+			let player1copy = [...player1];
+			if (
+				moveItem.value === playerCard.value ||
+				moveItem.color === playerCard.color
+			) {
+				move.push(playerCard);
+				player1copy.splice(index, 1);
+
+				setPlayer1(player1copy);
+				setField(move);
+				setPlayer2Turn(true);
+				setPlayer1Turn(false);
+			} else {
+				alert("Invalid card");
+			}
+		} else if (player2Turn === true) {
+			let player2copy = [...player2];
+			if (
+				moveItem.value === playerCard.value ||
+				moveItem.color === playerCard.color
+			) {
+				move.push(playerCard);
+				player2copy.splice(index, 1);
+
+				setPlayer2(player2copy);
+				setField(move);
+				setPlayer1Turn(true);
+				setPlayer2Turn(false);
+			} else {
+				alert("Invalid card");
+			}
+		}
+	};
 
 	useEffect(() => {
-        const player1deck = () => {
-            
+		const player1deck = () => {
 			const player1copy = [];
 			const player2copy = [];
 			for (let i = 0; i < 7; i++) {
@@ -30,22 +77,18 @@ export default function Game({ user, players }) {
 				player2copy.push(cards.at(-2)); // 108 107 106 105 104 103 102  end result array(101)
 				cards.pop();
 				cards.pop(); // remove 108
-				console.log(cards);
 			}
 			setPlayer1(player1copy);
 			setPlayer2(player2copy);
 			field.push(cards.at(-1));
 			cards.pop();
 			setField(field);
-			console.log(field);
 		};
 		if (flag.current) {
 			player1deck();
 			flag.current = false;
 		}
 	}, []);
-
-
 
 	return (
 		<>
@@ -65,59 +108,39 @@ export default function Game({ user, players }) {
 							<div class='flex w-full h-full mx-auto px-6 py-8'>
 								<div class='flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed'>
 									<div class='flex mt-10  w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
-										{player2.map((playerCard) => {
-											return (
-												<img
-													className={`scale-50 ml-0 `}
-													key={playerCard.id}
-													src={"assets/card-back.png"}
-													alt={playerCard.id}
-												/>
-											);
-										})}
+										<Player2
+											player2={player2}
+											nextMove={nextMove}
+											player2Turn={player2Turn}
+										/>
 									</div>
-									<div class='flex w-full max-w-full h-full items-center justify-center mx-auto  border-b border-gray-600  bg-gradient-to-r from-red-900 via-red-500 to-red-900'>
+									<div class='flex w-5/6 max-w-5/6 h-1/2 scale-50 items-center justify-center mx-auto  '>
 										<div class='relative  scale-50 flex w-full max-w-xl h-1/2 items-center justify-center mx-auto '>
-											{cards.map((card) => {
-												deg();
-												return (
-													<motion.img
-														initial={{ rotate: rotateDeg[0] }}
-														className={` ring-offset-black skew-x-12 skew-y-12 absolute scale-75 inset-0  z-10 `}
-														key={card.id}
-														src={"assets/card-back.png"}
-														alt={card.value}
-													/>
-												);
-											})}
+											<Deck
+												deg={deg}
+												rotateDeg={rotateDeg}
+												cards={cards}
+												player1Turn={player1Turn}
+												player2Turn={player2Turn}
+												player1={player1}
+												player2={player2}
+												setPlayer1={setPlayer1}
+												setPlayer2={setPlayer2}
+												setCards={setCards}
+											/>
 										</div>
-										<div class='flex  scale-50 w-full max-w-xl h-1/2 items-center justify-center mx-auto relative z-0'>
-											{field.map((item) => {
-												deg();
-												return (
-													<motion.img
-														initial={{ rotate: rotateDeg[0] }}
-														className={`absolute inset-0 scale-75 z-10 rotate-${rotateDeg[0]}`}
-														key={item.id}
-														src={item.src}
-														alt={item.value}
-													/>
-												);
-											})}
+										<div class='flex  scale-50 scale-x-25 w-full max-w-xl h-1/4 items-center justify-center mx-auto relative z-0'>
+											{/* the field deck  */}
+											<Field deg={deg} rotateDeg={rotateDeg} field={field} />
 										</div>
 									</div>
 
 									<div class='flex mt-10 w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
-										{player1.map((playerCard) => {
-											return (
-												<img
-													className={`scale-50 `}
-													key={playerCard.id}
-													src={playerCard.src}
-													alt={playerCard.id}
-												/>
-											);
-										})}
+										<Player1
+											player1={player1}
+											nextMove={nextMove}
+											player1Turn={player1Turn}
+										/>
 									</div>
 								</div>
 							</div>
