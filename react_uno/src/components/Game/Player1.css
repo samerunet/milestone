@@ -32,7 +32,7 @@
 }
 
 .customPlayer2 {
-	margin-right: -5% !important;
+	margin-right: -14% !important;
 	animation: 0.2s ease-out 0s 1 slideInFromLeft;
 }
 
@@ -50,4 +50,9 @@
 
 .customDeck:active {
 	animation: 0.5s ease-out 0s 1 slideOutFromLeft;
+}
+
+.turn {
+	font-size: 500%;
+	margin-bottom: 50%;
 }

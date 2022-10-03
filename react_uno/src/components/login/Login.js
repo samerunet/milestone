@@ -100,7 +100,7 @@ export default function Login({
 								<div className='mb-6'>
 									<button
 										type='submit'
-										className='w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none'
+										className='w-full px-3 py-4 text-white bg-red-500 rounded-md focus:bg-indigo-600 focus:outline-none'
 									>
 										Sign in
 									</button>

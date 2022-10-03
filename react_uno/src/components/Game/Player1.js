@@ -10,7 +10,7 @@ export default function Player1({
 }) {
 	let rem = 0;
 	return (
-		<div className='relative  scale-50 flex w-full max-w-xl h-1/4 items-center justify-center mx-auto '>
+		<div className='relative  scale-50 flex w-1/4 max-w-xl h-1/8 items-center justify-center mx-auto '>
 			{player1.map((playerCard, indexCurrent) => {
 				// player 2 card deck
 

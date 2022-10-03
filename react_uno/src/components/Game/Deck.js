@@ -21,7 +21,6 @@ export default function Deck({
 	const takeCard = () => {
 		let deck = [...cards];
 		let takeOneDeck = deck.at(-1);
-		console.log(takeOneDeck);
 
 		if (player1Turn === true) {
 			let player1Copy = [...player1];

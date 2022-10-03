@@ -6,7 +6,8 @@ import Field from "./Field.js";
 import Player2 from "./Player2.js";
 import Player1 from "./Player1.js";
 import Deck from "./Deck.js";
-export default function Game({ user, players }) {
+import axios from "axios";
+export default function Game({ user, players, API }) {
 	const flag = React.useRef(true);
 	const carddeck = CardDeck.sort((a, b) => 0.5 - Math.random());
 	const [cards, setCards] = useState(carddeck);
@@ -15,6 +16,9 @@ export default function Game({ user, players }) {
 
 	const [player2Turn, setPlayer2Turn] = useState(false);
 
+	const [player1, setPlayer1] = useState([]);
+	const [player2, setPlayer2] = useState([]);
+	const [field, setField] = useState([]);
 	// this is for random field and deck rotation
 	let rotateDeg = [20, 45, 30, 25, 2, 4, 40];
 	let rem = [-1, -2, -3, -4, -5, -6, -7];
@@ -30,58 +34,65 @@ export default function Game({ user, players }) {
 		});
 	};
 
-	const [player1, setPlayer1] = useState([]);
-	const [player2, setPlayer2] = useState([]);
-	const [field, setField] = useState([]);
 	// next move
-	let move = [...field];
-	let moveItem = field.at(-1);
 
-	const skipPlayer = () => {
-		console.log(player1Turn, player2Turn);
-		player1Turn ? setPlayer1Turn(false) : setPlayer1Turn(true);
-		player2Turn ? setPlayer2Turn(false) : setPlayer2Turn(true);
-		console.log(player1Turn, player2Turn);
-		moveItem.value = "nothing";
-		console.log(moveItem.value);
-		nextMove();
+	const updateScore1 = () => {
+		let userCopy = user;
+		userCopy.score += 100;
+		axios
+			.put(`${API}/${user.id}`, { ...userCopy })
+			.then((response) => console.log(response.data));
+	};
+	const winner = () => {
+		if (player1.length === 0) {
+			console.log("winner player1");
+			updateScore1();
+		} else if (player2.length === 0) {
+			alert("winner player2");
+		}
 	};
 	const nextMove = (playerCard, index) => {
-		if (moveItem.value === "skip") {
-			skipPlayer();
-		} else {
-			if (player1Turn === true) {
-				let player1copy = [...player1];
-				if (
-					moveItem.value === playerCard.value ||
-					moveItem.color === playerCard.color
-				) {
-					move.push(playerCard);
-					player1copy.splice(index, 1);
+		let move = [...field];
+		let moveItem = field.at(-1);
+		// if (playerCard.value === "skip") {
+		//     debugger;
+		//     player1Turn ? setPlayer1Turn(false) : setPlayer1Turn(true);
+		//     player2Turn ? setPlayer2Turn(false) : setPlayer2Turn(true);
+		//     moveItem.value = "nothing";
+		// } else
+		if (player1Turn === true) {
+			let player1copy = [...player1];
+			if (
+				moveItem.value === playerCard.value ||
+				moveItem.color === playerCard.color
+			) {
+				move.push(playerCard);
+				player1copy.splice(index, 1);
 
-					setPlayer1(player1copy);
-					setField(move);
-					setPlayer2Turn(true);
-					setPlayer1Turn(false);
-				} else {
-					alert("Invalid card");
-				}
-			} else if (player2Turn === true) {
-				let player2copy = [...player2];
-				if (
-					moveItem.value === playerCard.value ||
-					moveItem.color === playerCard.color
-				) {
-					move.push(playerCard);
-					player2copy.splice(index, 1);
+				setPlayer1(player1copy);
+				setField(move);
+				winner();
+				setPlayer2Turn(true);
+				setPlayer1Turn(false);
+			} else {
+				alert("Invalid card");
+			}
+		} else if (player2Turn === true) {
+			let player2copy = [...player2];
+			if (
+				moveItem.value === playerCard.value ||
+				moveItem.color === playerCard.color
+			) {
+				move.push(playerCard);
+				player2copy.splice(index, 1);
 
-					setPlayer2(player2copy);
-					setField(move);
-					setPlayer1Turn(true);
-					setPlayer2Turn(false);
-				} else {
-					alert("Invalid card");
-				}
+				setPlayer2(player2copy);
+				setField(move);
+				winner();
+				setPlayer1Turn(true);
+				setPlayer2Turn(false);
+			} else {
+				alert("Invalid card");
 			}
 		}
 	};
@@ -110,22 +121,22 @@ export default function Game({ user, players }) {
 
 	return (
 		<>
-			<div className='flex h-screen bg-gradient-to-r from-red-900 via-red-500 to-red-900'>
+			<div className='flex h-screen bg-gradient-to-r from-black via-red-500 to-black'>
 				<div className='flex-1 flex flex-col overflow-hidden'>
 					<header className='flex justify-between items-center bg-black text-white p-4'>
 						<div className='flex'>Username: {user.username}</div>
 						<div className='flex'>Score {user.score}</div>
 					</header>
 					<div className='flex h-full'>
-						<nav className='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
+						<nav className='flex w-1/4 h-full '>
 							<div className='w-full flex mx-auto px-6 py-8 border-dashed'>
-								user number 3
+								{/* user number 3 */}
 							</div>
 						</nav>
 						<main className='flex flex-col w-full h-full  overflow-x-hidden overflow-y-auto mb-14'>
 							<div className='flex w-full h-full mx-auto px-6 py-8'>
-								<div className='flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed'>
-									<div className='flex mt-10  w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
+								<div className='flex flex-col w-full h-full text-gray-900 text-xl'>
+									<div className='flex mt-10  w-5/6 max-w-5/6 h-1/4  mx-auto '>
 										<Player2
 											player2={player2}
 											nextMove={nextMove}
@@ -155,11 +166,15 @@ export default function Game({ user, players }) {
 												field={field}
 												rem={rem}
 												remRandom={remRandom}
+												player1Turn={player1Turn}
+												setPlayer1Turn={setPlayer1Turn}
+												player2Turn={player2Turn}
+												setPlayer2Turn={setPlayer2Turn}
 											/>
 										</div>
 									</div>
 
-									<div className='flex mt-10 w-5/6 max-w-5/6 h-1/4  mx-auto border-4 border-gray-900 border-dashed'>
+									<div className='flex mt-10 w-5/6 max-w-5/6 h-1/4  mx-auto'>
 										<Player1
 											deg={deg}
 											rotateDeg={rotateDeg}
@@ -171,8 +186,8 @@ export default function Game({ user, players }) {
 								</div>
 							</div>
 						</main>
-						<nav className='flex w-1/4 h-full border-4 border-gray-900 border-dashed'>
-							<div className='w-full flex mx-auto px-6 py-8'>user number 4</div>
+						<nav className='flex w-1/4 h-full '>
+							{/* <div className='w-full flex mx-auto px-6 py-8'>user number 4</div> */}
 						</nav>
 					</div>
 				</div>

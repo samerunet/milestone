@@ -38,7 +38,13 @@ export default function AppGateway() {
 				/>
 				<Route
 					path='/signup'
-					element={<Signup setPermission={setPermission} />}
+					element={
+						<Signup
+							setPermission={setPermission}
+							setUsers={setUsers}
+							API={API}
+						/>
+					}
 				/>
 
 				<Route
@@ -53,7 +59,7 @@ export default function AppGateway() {
 					path='/game'
 					element={
 						<ProtectedRoute permission={permission}>
-							<Game user={user} players={players} />
+							<Game user={user} players={players} API={API} />
 						</ProtectedRoute>
 					}
 				/>
